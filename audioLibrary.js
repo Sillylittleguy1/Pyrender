@@ -4,18 +4,16 @@ class AudioPlayer {
         this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 
-    // Function to play an audio file from a URL
-    playAudioFile(url) {
-        fetch(url)
-            .then(response => response.arrayBuffer())
-            .then(arrayBuffer => this.audioCtx.decodeAudioData(arrayBuffer))
+    // Function to play an audio file from binary data
+    playAudioFile(data) {
+        this.audioCtx.decodeAudioData(data)
             .then(audioBuffer => {
                 const source = this.audioCtx.createBufferSource();
                 source.buffer = audioBuffer;
                 source.connect(this.audioCtx.destination);
                 source.start();
             })
-            .catch(error => console.error('Error loading or decoding audio file:', error));
+            .catch(error => console.error('Error decoding audio data:', error));
     }
 }
 
