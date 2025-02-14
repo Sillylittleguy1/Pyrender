@@ -1,21 +1,34 @@
-// audioLibrary.js
-class AudioPlayer {
+// audioLib.js
+
+// Ensure Tone.js is included (import or CDN in the project)
+
+class AudioManager {
     constructor() {
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        this.synth = new Tone.Synth().toDestination();
+        this.player = null;
     }
 
-    // Function to play an audio file from binary data
-    playAudioFile(data) {
-        this.audioCtx.decodeAudioData(data)
-            .then(audioBuffer => {
-                const source = this.audioCtx.createBufferSource();
-                source.buffer = audioBuffer;
-                source.connect(this.audioCtx.destination);
-                source.start();
-            })
-            .catch(error => console.error('Error decoding audio data:', error));
+    // Play a sound using a synthesizer
+    playTone(frequency, duration) {
+        this.synth.triggerAttackRelease(frequency, duration);
+    }
+
+    // Play an audio file
+    playAudio(fileUrl) {
+        if (this.player) {
+            this.player.stop();
+        }
+        this.player = new Tone.Player(fileUrl).toDestination();
+        this.player.start();
+    }
+
+    // Stop currently playing audio
+    stopAudio() {
+        if (this.player) {
+            this.player.stop();
+        }
     }
 }
 
-// Export the AudioPlayer class for use in other scripts
-window.AudioPlayer = AudioPlayer;
+// Expose AudioManager globally so VPython can call it
+window.AudioManager = AudioManager;
