@@ -1,22 +1,21 @@
 // vpython_audio.js
 
-// Function to play an audio file
-function playAudio(audioUrl) {
+// Exposing the audio functions to Web VPython via the global 'window' object
+
+window.playAudio = function(audioUrl) {
     var audio = new Audio(audioUrl); // Create an audio object
     audio.play(); // Play the audio
-}
+};
 
-// Function to pause the audio
-function pauseAudio() {
+window.pauseAudio = function() {
     if (audio) {
         audio.pause();
     }
-}
+};
 
-// Function to stop the audio
-function stopAudio() {
+window.stopAudio = function() {
     if (audio) {
         audio.pause();
         audio.currentTime = 0; // Reset the playback time
     }
-}
+};
